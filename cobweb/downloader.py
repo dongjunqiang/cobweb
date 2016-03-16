@@ -15,7 +15,7 @@ class Downloader(object):
             self.init_cookie()
 
         try:
-            request = urllib.request.Request(url)
+            request = urllib.request.Request(url, headers=header, method='GET')
             response = urllib.request.urlopen(request, timeout=timeout)
             data = response.read()
         except URLError as e:
@@ -28,7 +28,7 @@ class Downloader(object):
             self.init_cookie()
 
         values = urllib.parse.urlencode(values).encode(encoding='utf8')
-        request = urllib.request.Request(url, values, header)
+        request = urllib.request.Request(url, values, header, method='POST')
 
         try:
             response = urllib.request.urlopen(request, timeout=timeout)
