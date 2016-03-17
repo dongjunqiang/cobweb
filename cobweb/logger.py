@@ -19,7 +19,7 @@ class Logger:
                 filemode='a'
         )
 
-    def do_log(self, data, context=None, path='',):
+    def do_log(self, data, context=None, path=''):
         file_handler = logging.FileHandler(path)
         file_handler.setFormatter(self.formatter)
 
