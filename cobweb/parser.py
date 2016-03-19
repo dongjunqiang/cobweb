@@ -11,12 +11,15 @@ class Parser:
         self.content = None
         self.urls = []
         self.base_url = None
-        self.filter_str_list = []
+        self.filter_str_dict = {
+            'equal': ['/', '#', 'javascript:'],
+            'contain': []
+        }
 
-        # 自定义解析器
+        # 自定义url解析器
         if func_parse_url is not None:
             self.parse_url = types.MethodType(func_parse_url, self)
-
+        # 自定义内容解析器
         if func_parse_content is not None:
             self.parse_content = types.MethodType(func_parse_content, self)
 
@@ -28,26 +31,29 @@ class Parser:
     def parse_url(self):
         node = self.soup.find_all('a')
         for n in node:
-            url = self.filter_url(n.get('href', ''))
+            url = n.get('href', '')
             if url:
-                self.urls.append(url)
+                url = self.filter_url(url)
+                if url:
+                    self.urls.append(url)
 
-    # 过滤url
+    # 过滤url TODO 兼容性
     def filter_url(self, url):
         parse_url = urlparse(url)
-        if not url:
-            return False
-        elif url == '/' or url == '#' or 'javascript:' in url:
-            return False
         # 判断 scheme
-        elif parse_url.scheme and parse_url.scheme != self.base_url.scheme:
+        if parse_url.scheme and parse_url.scheme != self.base_url.scheme:
             return False
         # 判断 url 是否属于当前域名
         elif parse_url.netloc and parse_url.netloc not in self.base_url.netloc:
             return False
 
-        if self.filter_str_list:
-            for str_ in self.filter_str_list:
+        if self.filter_str_dict['equal']:
+            for str_ in self.filter_str_dict['equal']:
+                if str_ == url:
+                    return False
+
+        if self.filter_str_dict['contain']:
+            for str_ in self.filter_str_dict['contain']:
                 if str_ in url:
                     return False
 
@@ -63,7 +69,8 @@ class Parser:
         self.base_url = urlparse(base_url)
 
     def add_filter_str(self, filter_str):
-        self.filter_str_list.append(filter_str)
+        self.filter_str_dict['equal'] += filter_str['equal']
+        self.filter_str_dict['contain'] += filter_str['contain']
 
     def get_content(self):
         return self.content
