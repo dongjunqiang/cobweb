@@ -23,9 +23,14 @@ class Storage:
             return False
         return True
 
+    def set_base_dir(self, base_dir):
+        self.base_dir = base_dir
+        return self
+
 
 def redis_save(self, key, value):
     return True
+
 
 def mysql_save(self, value):
     return True

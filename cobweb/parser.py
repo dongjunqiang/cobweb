@@ -26,6 +26,7 @@ class Parser:
     # 解析内容
     def parse_content(self):
         self.content = self.soup.body
+        return self
 
     # 解析 url
     def parse_url(self):
@@ -36,6 +37,7 @@ class Parser:
                 url = self.filter_url(url)
                 if url:
                     self.urls.append(url)
+        return self
 
     # 过滤url TODO 兼容性
     def filter_url(self, url):
@@ -64,6 +66,7 @@ class Parser:
     def set_html(self, html):
         self.html = html
         self.soup = BeautifulSoup(self.html, 'html.parser', from_encoding='utf8')
+        return self
 
     def set_base_url(self, base_url):
         self.base_url = urlparse(base_url)
