@@ -1,11 +1,9 @@
 # 下载器
-
 import urllib.request
 import urllib.parse
 import urllib.error
 import http.cookiejar
 import gzip
-from urllib.error import URLError, HTTPError
 
 
 class Downloader(object):
@@ -14,12 +12,9 @@ class Downloader(object):
         if cookie:
             self.init_cookie()
 
-        try:
-            request = urllib.request.Request(url, headers=header, method='GET')
-            response = urllib.request.urlopen(request, timeout=timeout)
-            data = response.read()
-        except URLError as e:
-            return False
+        request = urllib.request.Request(url, headers=header, method='GET')
+        response = urllib.request.urlopen(request, timeout=timeout)
+        data = response.read()
 
         return data
 
@@ -30,11 +25,8 @@ class Downloader(object):
         values = urllib.parse.urlencode(values).encode(encoding='utf8')
         request = urllib.request.Request(url, values, header, method='POST')
 
-        try:
-            response = urllib.request.urlopen(request, timeout=timeout)
-            res = response.read()
-        except URLError as e:
-            return False
+        response = urllib.request.urlopen(request, timeout=timeout)
+        res = response.read()
 
         return res
 

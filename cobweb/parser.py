@@ -25,7 +25,7 @@ class Parser:
 
     # 解析内容
     def parse_content(self):
-        self.content = self.soup.body
+        self.content = self.soup.html
         return self
 
     # 解析 url

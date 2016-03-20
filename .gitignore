@@ -3,3 +3,5 @@ Thumbs.db
 .idea/
 __pycache__/
 /tmp.py
+/data
+/log
