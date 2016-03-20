@@ -35,7 +35,3 @@ def redis_save(self, key, value):
 def mysql_save(self, value):
     return True
 
-'''
-s = Storage(mysql_save)
-s.save('value')
-'''

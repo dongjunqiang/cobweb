@@ -20,6 +20,7 @@ class Logger:
         )
 
     def do_log(self, data, context=None, path=''):
+        path = self.gen_path(path)
         file_handler = logging.FileHandler(path)
         file_handler.setFormatter(self.formatter)
 
