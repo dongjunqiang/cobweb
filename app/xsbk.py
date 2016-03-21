@@ -1,4 +1,6 @@
 # 抓取嗅事百科的段子
+import sys
+sys.path.append('..')
 from cobweb.downloader import *
 from cobweb.parser import *
 import time
