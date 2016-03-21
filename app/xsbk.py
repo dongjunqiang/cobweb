@@ -7,6 +7,7 @@ import re
 
 def parse_joke(self):
     data = self.soup.find_all('div', class_='article block untagged mb15')
+    content_pattern = re.compile("<div.*?content\">(.*?)<!--(.*?)-->.*?</div>", re.S)
     self.content = []
     for d in data:
         soup_d = BeautifulSoup(str(d), 'html.parser', from_encoding='utf8')
@@ -16,8 +17,7 @@ def parse_joke(self):
         c = soup_d.find('div', class_='content')
         # content = str(c.contents[0]).strip('\n')
         # timestamp = str(c.contents[1])
-        pattern = re.compile("<div.*?content\">(.*?)<!--(.*?)-->.*?</div>", re.S)
-        re1 = pattern.findall(str(c))
+        re1 = content_pattern.findall(str(c))
         content = re1[0][0].strip('\n').replace('<br>', '\n')
         timestamp = re1[0][1]
         img = soup_d.find('div', class_='thumb')
@@ -27,7 +27,6 @@ def parse_joke(self):
         # 点赞数
         like = soup_d.find('i', class_='number').string
         j = "name: %s\ncontent: %s\ntime: %s\nlike: %s" % (str(name), content, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(timestamp))), str(like))
-        print(j)
         self.content.append(j)
     return self
 
@@ -69,4 +68,3 @@ class Sxbk:
 
 s = Sxbk()
 s.start()
-
