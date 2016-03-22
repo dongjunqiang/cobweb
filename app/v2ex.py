@@ -63,4 +63,4 @@ class V2ex:
 
 
 v = V2ex()
-v.run('jiangyang33@hotmail.com', 'mike19910903joy!')
+v.run('**', '**')
