@@ -46,7 +46,7 @@ class Sxbk:
     def get_page(self, num=1):
         return self.downloader.get(self.url + str(num), header={
             'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
-        }, timeout=50).decode('utf8')
+        }, timeout=50)
 
     # 解析段子到 list
     def gen_jokes(self, html):
