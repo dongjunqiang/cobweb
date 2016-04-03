@@ -6,12 +6,14 @@ import os
 class Storage:
 
     def __init__(self, func=None):
-        self.base_dir = 'E:\Cobweb\cobweb\\'
+        self.base_dir = ''
         if func is not None:
             self.save = types.MethodType(func, self)
 
     # 默认使用file储存
     def save(self, filename, data):
+        if not self.base_dir or not os.path.exists(self.base_dir):
+            raise RuntimeError('please check base_dir')
         path = self.base_dir + filename
         # 如果文件存在则返回
         if os.path.exists(path):
