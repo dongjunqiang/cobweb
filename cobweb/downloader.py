@@ -10,9 +10,16 @@ class Downloader(object):
     def __init__(self):
         self.do_init = False
 
-    def get(self, url, header={}, cookie=False, decode='utf8', timeout=2):
+    def get(self, url, values={}, header={}, cookie=False, decode='utf8', timeout=2):
         if cookie:
             self.init_cookie()
+
+        if values:
+            part = urllib.parse.urlencode(values)
+            link = "?"
+            if '?' in url:
+                link = "&"
+            url += link + part
 
         request = urllib.request.Request(url, headers=header, method='GET')
         response = urllib.request.urlopen(request, timeout=timeout)
