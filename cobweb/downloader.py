@@ -10,7 +10,7 @@ class Downloader(object):
     def __init__(self):
         self.do_init = False
 
-    def get(self, url, values={}, header={}, cookie=False, decode='utf8', timeout=2):
+    def get(self, url, values={}, header={}, cookie=True, decode='utf8', timeout=2):
         if cookie:
             self.init_cookie()
 
@@ -23,11 +23,12 @@ class Downloader(object):
 
         request = urllib.request.Request(url, headers=header, method='GET')
         response = urllib.request.urlopen(request, timeout=timeout)
-        data = response.read().decode(decode)
-
+        data = response.read()
+        if decode:
+            data = data.decode(decode)
         return data
 
-    def post(self, url, values, header={}, cookie=False, decode='utf8', timeout=2):
+    def post(self, url, values, header={}, cookie=True, decode='utf8', timeout=2):
         if cookie:
             self.init_cookie()
 
@@ -35,9 +36,10 @@ class Downloader(object):
         request = urllib.request.Request(url, values, header, method='POST')
 
         response = urllib.request.urlopen(request, timeout=timeout)
-        res = response.read().decode(decode)
-
-        return res
+        data = response.read()
+        if decode:
+            data = data.decode(decode)
+        return data
 
     def init_cookie(self):
         if self.do_init:
