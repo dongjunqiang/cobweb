@@ -1,4 +1,6 @@
 # -*- coding=utf-8 -*-
+import sys
+sys.path.append("..")
 from cobweb.downloader import *
 from bs4 import BeautifulSoup
 import re
@@ -24,7 +26,7 @@ class Douban:
         }
 
     def parse(self, html):
-        ret = False
+        ret = []
         soup = BeautifulSoup(html, "html.parser")
         table = soup.find_all("table", class_="olt")
         if not table:
@@ -49,9 +51,9 @@ class Douban:
                 name = res[0][2]
                 comment = res[0][3]
                 time = res[0][4]
-                if self.area in title:
-                    ret = True
-                    print("标题: %s\n地址: %s\n留言: %s\n用户: %s\n时间: %s" % (title, url, comment, name, time))
+                for area in self.area:
+                    if area in title:
+                        ret.append("标题: %s\n地址: %s\n留言: %s\n用户: %s\n时间: %s" % (title, url, comment, name, time))
             else:
                 print("re fail")
         return ret
@@ -63,7 +65,7 @@ class Douban:
             print("未输入内容!")
             exit()
 
-        self.area = area
+        self.area = area.split(",")
         for url_conf in self.url_map:
             base_url = url_conf[0]
             for page in range(self.pages):
@@ -85,10 +87,11 @@ class Douban:
                 if not html_doc:
                     continue
                 ret = self.parse(html_doc)
-                if not ret:
-                    print("本页木有 '%s' 的相关结果\n" % self.area)
+                if ret:
+                    print("%s\n" % "\n-----------------\n".join(ret))
                 else:
-                    print("\n")
+                    print("本页木有 '%s' 的相关结果\n" % ",".join(self.area))
+
 
 if __name__ == "__main__":
     Douban().search()
