@@ -59,7 +59,7 @@ class Douban:
         return ret
 
     def search(self):
-        print("请输入区域:")
+        print("请输入区域,多个词用逗号分割:")
         area = input()
         if not area:
             print("未输入内容!")
@@ -90,7 +90,7 @@ class Douban:
                 if ret:
                     print("%s\n" % "\n-----------------\n".join(ret))
                 else:
-                    print("本页木有 '%s' 的相关结果\n" % ",".join(self.area))
+                    print("本页木有 '%s' 的相关结果\n" % "|".join(self.area))
 
 
 if __name__ == "__main__":
